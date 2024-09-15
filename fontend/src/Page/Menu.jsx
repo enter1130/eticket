@@ -42,17 +42,17 @@ function Menu(){
       </div>
       <Row gutter={12}>
         <Col span={12}>
-          <Button icon={<UserOutlined />} block type={'primary'} className='my-1' onClick={()=>window.location.href='/eticket/user'}>個人資料</Button>
+          <Button icon={<UserOutlined />} block type={'primary'} className='my-1' onClick={()=>window.location.href='/user'}>個人資料</Button>
         </Col>
         <Col span={12}>
-          <Button danger icon={<LogoutOutlined />} block type={'primary'} color="danger" className='my-1' onClick={()=>window.location.href='/eticket/logout'}>登出</Button>      
+          <Button danger icon={<LogoutOutlined />} block type={'primary'} color="danger" className='my-1' onClick={()=>window.location.href='/logout'}>登出</Button>      
         </Col>
       </Row>
       <Divider orientation="left" className='mt-3' >菜單</Divider>
       <Button block size="large" type='dashed' icon={<HomeOutlined />} className='my-1' onClick={()=>window.location.href='/'}>首頁</Button>
-      <Button block size="large" type='dashed' icon={<CalendarOutlined />} className='my-1' onClick={()=>window.location.href='/eticket/event'}>全部活動</Button>
-      <Button block size="large" type='dashed' icon={<HeartOutlined />} className='my-1' onClick={()=>window.location.href='/eticket/favorite'}>我的最愛</Button>
-      <Button block size="large" type='dashed' icon={<HistoryOutlined />} className='my-1' onClick={()=>window.location.href='/eticket/history'}>參與歷史與心得</Button>
+      <Button block size="large" type='dashed' icon={<CalendarOutlined />} className='my-1' onClick={()=>window.location.href='/event'}>全部活動</Button>
+      <Button block size="large" type='dashed' icon={<HeartOutlined />} className='my-1' onClick={()=>window.location.href='/favorite'}>我的最愛</Button>
+      <Button block size="large" type='dashed' icon={<HistoryOutlined />} className='my-1' onClick={()=>window.location.href='/history'}>參與歷史與心得</Button>
     </Drawer>
     </>
   )
