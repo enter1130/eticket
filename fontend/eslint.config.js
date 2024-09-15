@@ -19,7 +19,6 @@ export default [
       },
     },
     settings: { react: { version: '18.3' } },
-    base:'/eticket/fontend',
     plugins: {
       react,
       'react-hooks': reactHooks,
