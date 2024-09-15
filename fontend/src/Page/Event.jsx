@@ -5,40 +5,12 @@ import { useEffect, useState } from "react";
 import logo from '../../public/vite.svg';
 import Menu from "./Menu";
 
-
-function Event() {
+function Event({basepath}) {
   const onSearch = (value) =>{
     if(value!==''){
       console.log(value)
     }
   };
-  const booklist=[
-    {
-      id:"1",
-      date:'2021-10-10',
-      title:'活動1',
-      location:'台北市',
-      price:"1000 TWD",
-      status:'scanned',
-      src:'/public/vite.svg'
-    },{
-      id:"2",
-      date:'2021-10-11',
-      title:'活動2',
-      location:'台北市',
-      price:"2000 TWD",
-      status:'active',
-      src:'/public/vite.svg'
-    },{
-      id:"3",
-      date:'2021-10-12',
-      title:'活動3',
-      location:'台北市',
-      price:"3000 TWD",
-      status:'active',
-      src:'/public/vite.svg'
-    },
-  ]
 
   const [newlist, setNewlist] = useState([
     {
@@ -97,7 +69,7 @@ function Event() {
 
   return (
     <>
-    <Menu />
+    <Menu basepath={basepath} />
     <div style={{marginTop:'80px'}} className="container p-3" >
       <Divider orientation="left" >全部活動</Divider>
       <Form className="mt-3">
@@ -123,7 +95,7 @@ function Event() {
                 </div>
               </div>
               <Space.Compact block className="mt-3" align="baseline">
-                <Button block onClick={()=>window.location.href=`/event/${item.id}`} >立即報名</Button>
+                <Button block onClick={()=>window.location.href=`${basepath}/event/${item.id}`} >立即報名</Button>
                 <Button icon={item.like?(<HeartFilled />):<HeartOutlined />} />
               </Space.Compact>
             </Card>

@@ -5,4 +5,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base:'eticket',
   plugins: [react()],
+  build:{
+    outDir:'dist'
+  }
 })

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 import Menu from "./Menu";
 
-function History() {
+function History({basepath}) {
 
   const onSearch = (value) =>{
     if(value!==''){
@@ -78,7 +78,7 @@ function History() {
 
   return (
     <>
-    <Menu />
+    <Menu basepath={basepath} />
     <div style={{marginTop:'80px'}} className="container p-3" >
       <Form className="mt-3">
         <Form.Item name={'search'}>

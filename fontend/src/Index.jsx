@@ -7,20 +7,37 @@ import Login from './Page/Login';
 import NotFound from './Page/NotFound';
 
 function Index() {
+  const basePath = '/eticket';
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basePath}>
       <Routes>
-        <Route path='eticket' >
-          <Route index element={<Home />} />
-          <Route path='history' element={<History />} />
-          <Route path='login' element={<Login />} />
-          <Route path='event' element={<Event />} />
-          <Route path='event/:id' element={<EventContent />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
+        <Route index element={<Home basepath={basePath} />} />
+        <Route path='history' index element={<History basepath={basePath} />} />
+        <Route path='login' index element={<Login basepath={basePath} />} />
+        <Route path='event' index element={<Event basepath={basePath} />} />
+        <Route path='event/:id' element={<EventContent basepath={basePath} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
 }
+
+
+const MainLayout = () => {
+  return (
+    <div>
+      {/* 主页面内容 */}
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path='history' element={<History />} />
+        <Route path='login' element={<Login />} />
+        <Route path='event' element={<Event />} />
+        <Route path='event/:id' element={<EventContent />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
+  );
+};
+
 
 export default Index

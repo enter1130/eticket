@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import logo from '../../public/vite.svg';
 import Menu from "./Menu";
 
-function Home() {
+function Home({basepath}) {
   const onSearch = (value) =>{
     if(value!==''){
       console.log(value)
@@ -102,7 +102,7 @@ function Home() {
 
   return (
     <>
-    <Menu />
+    <Menu basepath={basepath} />
     <div style={{marginTop:'80px'}} className="container p-3" >
       <Form className="mt-3">
         <Form.Item name={'search'}>
@@ -122,7 +122,7 @@ function Home() {
             <div>查看更多</div>
           </Button>
         </div>):<div className="text-center p-2 d-flex justify-content-center">
-          <Button onClick={()=>window.location.href='/event'} type="dashed" className="ticket" >
+          <Button onClick={()=>window.location.href=`${basepath}/event`} type="dashed" className="ticket" >
             <PicRightOutlined style={{ fontSize: '50px'}} />
             <div>按此瀏覽全部活動</div>
           </Button>
@@ -150,7 +150,7 @@ function Home() {
                 </div>
               </div>
               <Space.Compact block className="mt-3" align="baseline">
-                <Button block onClick={()=>window.location.href=`/event/${item.id}`} >立即報名</Button>
+                <Button block onClick={()=>window.location.href=`${basepath}/event/${item.id}`} >立即報名</Button>
                 <Button icon={item.like?(<HeartFilled />):<HeartOutlined />} />
               </Space.Compact>
             </Card>
