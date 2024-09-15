@@ -10,35 +10,33 @@ function Home() {
       console.log(value)
     }
   };
-  // const booklist=[
-  //   {
-  //     id:"1",
-  //     date:'2021-10-10',
-  //     title:'活動1',
-  //     location:'台北市',
-  //     price:"1000 TWD",
-  //     status:'scanned',
-  //     src:'/public/vite.svg'
-  //   },{
-  //     id:"2",
-  //     date:'2021-10-11',
-  //     title:'活動2',
-  //     location:'台北市',
-  //     price:"2000 TWD",
-  //     status:'active',
-  //     src:'/public/vite.svg'
-  //   },{
-  //     id:"3",
-  //     date:'2021-10-12',
-  //     title:'活動3',
-  //     location:'台北市',
-  //     price:"3000 TWD",
-  //     status:'active',
-  //     src:'/public/vite.svg'
-  //   },
-  // ]
-
-  const booklist=[]
+  const booklist=[
+    {
+      id:"1",
+      date:'2021-10-10',
+      title:'活動1',
+      location:'台北市',
+      price:"1000 TWD",
+      status:'scanned',
+      src:'/public/vite.svg'
+    },{
+      id:"2",
+      date:'2021-10-11',
+      title:'活動2',
+      location:'台北市',
+      price:"2000 TWD",
+      status:'active',
+      src:'/public/vite.svg'
+    },{
+      id:"3",
+      date:'2021-10-12',
+      title:'活動3',
+      location:'台北市',
+      price:"3000 TWD",
+      status:'active',
+      src:'/public/vite.svg'
+    },
+  ]
 
   const [newlist, setNewlist] = useState([
     {
@@ -88,6 +86,12 @@ function Home() {
     
   }
 
+  const [visible, setVisible] = useState(false);
+
+  const modalOpen=(value)=>{
+    setVisible(value);
+  }
+
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -96,8 +100,9 @@ function Home() {
   }, []);
 
   return (
-    <div className="container p-3" >
-      <Menu />
+    <>
+    <Menu />
+    <div style={{marginTop:'80px'}} className="container p-3" >
       <Form className="mt-3">
         <Form.Item name={'search'}>
           <Search onSearch={onSearch} allowClear placeholder="輸入活動名稱" />
@@ -105,18 +110,17 @@ function Home() {
       </Form>
       <Divider orientation="left" >即將到來的活動</Divider>
       <Skeleton loading={loading} active paragraph={{rows:15}} className="">
-      <Carousel infinite={false} style={{minHeight:'550px'}}>
-        {booklist.length?(<>
+      <Carousel infinite={false} draggable={visible} beforeChange={visible} style={{minHeight:'550px'}}>
         {booklist.map((item,index)=>(
-          <Ticket key={index} item={item} />
+          <Ticket isOpen={modalOpen} key={index} item={item} />
         ))}
+        {booklist.length?(
         <div className="text-center p-2 d-flex justify-content-center">
           <Button type="dashed" className="ticket" >
             <PicRightOutlined style={{ fontSize: '50px'}} />
             <div>查看更多</div>
           </Button>
-        </div>
-        </>):<div className="text-center p-2 d-flex justify-content-center">
+        </div>):<div className="text-center p-2 d-flex justify-content-center">
           <Button onClick={()=>window.location.href='/event'} type="dashed" className="ticket" >
             <PicRightOutlined style={{ fontSize: '50px'}} />
             <div>按此瀏覽全部活動</div>
@@ -127,7 +131,7 @@ function Home() {
       <div style={{paddingTop:'50px',paddingBottom:'50px'}}>
       <Divider orientation="left" >推薦活動</Divider>
       <Skeleton loading={loading} active paragraph={{rows:15}} className="">
-      <Carousel dotPosition="Bottom" arrows infinite={false} style={{minHeight:'490px'}}>
+      <Carousel dotPosition="Bottom"  draggable={visible} beforeChange={visible} arrows infinite={false} style={{minHeight:'490px'}}>
         {newlist.map((item,index)=>(
           <div className="text-center px-2">
             <Card title={item.title} key={index}>
@@ -145,7 +149,7 @@ function Home() {
                 </div>
               </div>
               <Space.Compact block className="mt-3" align="baseline">
-                <Button block >立即報名</Button>
+                <Button block onClick={()=>window.location.href=`/event/${item.id}`} >立即報名</Button>
                 <Button icon={item.like?(<HeartFilled />):<HeartOutlined />} />
               </Space.Compact>
             </Card>
@@ -158,24 +162,30 @@ function Home() {
       </Skeleton>
       </div>
     </div>
+    </>
   )
 }
 
-function Ticket({item}){
+function Ticket({item,isOpen}){
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
+    isOpen(true);
   };
   const handleOk = () => {
     setIsModalOpen(false);
+    isOpen(false);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    isOpen(false);
   };
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
   return(
     <>
-    <Modal centered maskClosable={false} title={item.title} open={isModalOpen} footer="" onOk={handleOk} onCancel={handleCancel}>
-      <div style={{height:'450px'}} className="d-flex justify-content-center align-items-center">
+    <Modal centered maskClosable={false} title={item.title} footer="" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <div style={{height:windowHeight*0.7}} className="d-flex justify-content-center align-items-center">
         <QRCode size={250} status={item.status} icon="/public/vite.svg" iconSize={160/4} errorLevel="H" value={item.id} />
       </div>
       <Divider />

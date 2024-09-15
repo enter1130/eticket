@@ -1,5 +1,5 @@
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-import { Button, Card, Divider, Form, Image, Modal, QRCode, Skeleton, Space, Tag } from "antd";
+import { Button, Card, Divider, Form, Image, Skeleton, Space, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
 import Menu from "./Menu";
@@ -95,8 +95,9 @@ function Event() {
   }, []);
 
   return (
-    <div className="container p-3" >
-      <Menu />
+    <>
+    <Menu />
+    <div style={{marginTop:'80px'}} className="container p-3" >
       <Divider orientation="left" >全部活動</Divider>
       <Form className="mt-3">
         <Form.Item name={'search'}>
@@ -121,7 +122,7 @@ function Event() {
                 </div>
               </div>
               <Space.Compact block className="mt-3" align="baseline">
-                <Button block >立即報名</Button>
+                <Button block onClick={()=>window.location.href=`/event/${item.id}`} >立即報名</Button>
                 <Button icon={item.like?(<HeartFilled />):<HeartOutlined />} />
               </Space.Compact>
             </Card>
@@ -131,45 +132,6 @@ function Event() {
         <Button block size="large" type="dashed">查看更多</Button>
       </div>
       </Skeleton>
-    </div>
-  )
-}
-
-function Ticket({item}){
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  return(
-    <>
-    <Modal centered maskClosable={false} title={item.title} open={isModalOpen} footer="" onOk={handleOk} onCancel={handleCancel}>
-      <div style={{height:'450px'}} className="d-flex justify-content-center align-items-center">
-        <QRCode size={250} status={item.status} icon="/public/vite.svg" iconSize={160/4} errorLevel="H" value={item.id} />
-      </div>
-      <Divider />
-      <div className="text-center">抵達現場後請出示此QR code</div>
-    </Modal>
-    <div className="text-center p-2 d-flex justify-content-center">
-      <div className="ticket">
-        <img src="https://via.placeholder.com/300x200" alt="Event Image" />
-        <div className="ticket-info">
-            <h1>{item.title}</h1>
-            <div className="text-start">
-            <p className="location">地點：{item.location}</p>
-            <p className="date">日期：{item.date}</p>
-            <p className="price">價格：{item.price}</p>
-            </div>
-            <div className="ticket-footer">
-                <Button onClick={showModal} type="text">{item.status=='scanned'?"感謝您的參與！":"展示QR Code"}</Button>
-            </div>
-        </div>
-      </div>
     </div>
     </>
   )

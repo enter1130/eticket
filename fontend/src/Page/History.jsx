@@ -1,5 +1,5 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Descriptions, Divider, Form, List, Modal, Rate, Upload } from "antd";
+import { Button, Descriptions, Divider, Form, List, Modal, Rate, Typography, Upload } from "antd";
 import Search from "antd/es/input/Search";
 import TextArea from 'antd/es/input/TextArea';
 import React, { useEffect, useState } from "react";
@@ -77,8 +77,9 @@ function History() {
 
 
   return (
-    <div className="container p-3" >
-      <Menu />
+    <>
+    <Menu />
+    <div style={{marginTop:'80px'}} className="container p-3" >
       <Form className="mt-3">
         <Form.Item name={'search'}>
           <Search onSearch={onSearch} allowClear placeholder="輸入活動名稱" />
@@ -103,6 +104,7 @@ function History() {
         )}
       />
     </div>
+    </>
   )
 }
 
@@ -136,6 +138,7 @@ function Edit({item}){
     }
     return e?.fileList;
   };
+  const [expanded, setExpanded] = useState(false);
 
   return(
     <>
@@ -161,8 +164,15 @@ function Edit({item}){
       </Form>
     </Modal>
     <Descriptions title='心得' className='my-3' extra={<Button onClick={showModal} type='text' icon={<EditOutlined/>} />}>
+    <Descriptions.Item>
+      <Typography.Paragraph
+        ellipsis={{
+          rows:'3',
+          expandable: 'collapsible',
+          symbol: expanded?'收起':'查看更多',
+          expanded,
+      }}>{item.content}</Typography.Paragraph></Descriptions.Item>
       <Descriptions.Item><Rate disabled={true} defaultValue={item.rate} /></Descriptions.Item>
-      <Descriptions.Item>{item.content}</Descriptions.Item>
     </Descriptions>
     </>
   )

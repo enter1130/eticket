@@ -18,14 +18,16 @@ function Menu(){
 
   return(
     <>
-    <div className='py-3 d-flex flex-row justify-content-between mt-3 mx-1'>
-      <div>
+    <nav id="menu" className="fixed-top py-3">
+    <div className='p-3 d-flex flex-row justify-content-between'>
+      <a href="/">
         <img src="/public/vite.svg" alt="logo" style={{height:'40px'}} />
-      </div>
+      </a>
       <div className='d-flex justify-content-center align-item-center'>
         <Button onClick={showDrawer} type={'text'} size="large" icon={<MenuOutlined />} />
       </div>
     </div>
+    </nav>
     <Drawer onClose={onClose} open={open}>
       <div className='pb-3 d-flex flex-row justify-content-between mx-1'>
         <div className='d-flex justify-content-center align-item-center'>
