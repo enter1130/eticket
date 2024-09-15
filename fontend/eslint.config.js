@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
 
 export default [
+  
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
@@ -18,6 +19,7 @@ export default [
       },
     },
     settings: { react: { version: '18.3' } },
+    base:'/eticket/fontend',
     plugins: {
       react,
       'react-hooks': reactHooks,
