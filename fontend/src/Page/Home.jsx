@@ -2,6 +2,7 @@ import { HeartFilled, HeartOutlined, PicRightOutlined } from "@ant-design/icons"
 import { Button, Card, Carousel, Divider, Form, Image, Modal, QRCode, Skeleton, Space, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
+import logo from '../../public/vite.svg';
 import Menu from "./Menu";
 
 function Home() {
@@ -136,7 +137,7 @@ function Home() {
           <div className="text-center px-2">
             <Card title={item.title} key={index}>
               <div className="border rounded p-3">
-                <Image preview={false} src="/public/vite.svg" width={160} />
+                <Image preview={false} src={logo} width={160} />
               </div>
               <div className="mt-3 text-start">
                 <div>日期：{item.date}</div>
@@ -186,7 +187,7 @@ function Ticket({item,isOpen}){
     <>
     <Modal centered maskClosable={false} title={item.title} footer="" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
       <div style={{height:windowHeight*0.7}} className="d-flex justify-content-center align-items-center">
-        <QRCode size={250} status={item.status} icon="/public/vite.svg" iconSize={160/4} errorLevel="H" value={item.id} />
+        <QRCode size={250} status={item.status} icon={logo} iconSize={160/4} errorLevel="H" value={item.id} />
       </div>
       <Divider />
       <div className="text-center">抵達現場後請出示此QR code</div>

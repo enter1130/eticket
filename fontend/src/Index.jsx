@@ -10,12 +10,14 @@ function Index() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' index element={<Home />} />
-        <Route path='/history' index element={<History />} />
-        <Route path='/login' index element={<Login />} />
-        <Route path='/event' index element={<Event />} />
-        <Route path='/event/:id' element={<EventContent />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path='eticket' >
+          <Route index element={<Home />} />
+          <Route path='history' element={<History />} />
+          <Route path='login' element={<Login />} />
+          <Route path='event' element={<Event />} />
+          <Route path='event/:id' element={<EventContent />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

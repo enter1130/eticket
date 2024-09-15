@@ -1,6 +1,8 @@
 import { CalendarOutlined, HeartOutlined, HistoryOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Divider, Drawer, Row } from "antd";
 import { useState } from "react";
+import logo from '../../public/vite.svg';
+
 function Menu(){
   const [open, setOpen] = useState(false);
 
@@ -21,7 +23,7 @@ function Menu(){
     <nav id="menu" className="fixed-top py-3">
     <div className='p-3 d-flex flex-row justify-content-between'>
       <a href="/">
-        <img src="/public/vite.svg" alt="logo" style={{height:'40px'}} />
+        <img src={logo} alt="logo" style={{height:'40px'}} />
       </a>
       <div className='d-flex justify-content-center align-item-center'>
         <Button onClick={showDrawer} type={'text'} size="large" icon={<MenuOutlined />} />
@@ -31,7 +33,7 @@ function Menu(){
     <Drawer onClose={onClose} open={open}>
       <div className='pb-3 d-flex flex-row justify-content-between mx-1'>
         <div className='d-flex justify-content-center align-item-center'>
-          <Avatar className="border" src="/public/vite.svg" size={60} >王小明</Avatar>
+          <Avatar className="border" src={logo} size={60} >王小明</Avatar>
         </div>
         <div className="text-end">
           <div className="text-muted" style={{fontSize:'10pt'}}>會員等級：LV2</div>

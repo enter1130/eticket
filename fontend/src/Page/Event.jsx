@@ -2,6 +2,7 @@ import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Button, Card, Divider, Form, Image, Skeleton, Space, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
+import logo from '../../public/vite.svg';
 import Menu from "./Menu";
 
 
@@ -109,7 +110,7 @@ function Event() {
           <div className="text-center px-2">
             <Card title={item.title} key={index}>
               <div className="border rounded p-3">
-                <Image preview={false} src="/public/vite.svg" width={160} />
+                <Image preview={false} src={logo} width={160} />
               </div>
               <div className="mt-3 text-start">
                 <div>日期：{item.date}</div>
