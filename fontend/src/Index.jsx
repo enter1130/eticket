@@ -7,7 +7,7 @@ import Login from './Page/Login';
 import NotFound from './Page/NotFound';
 
 function Index() {
-  const basePath = '/eticket';
+  const basePath = import.meta.env.BASE_URL;
   return (
     <BrowserRouter basename={basePath}>
       <Routes>
