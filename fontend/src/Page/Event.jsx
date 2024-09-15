@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import logo from '../../public/vite.svg';
 import Menu from "./Menu";
 
-function Event({basepath}) {
+
+function Event() {
   const onSearch = (value) =>{
     if(value!==''){
       console.log(value)
@@ -69,7 +70,7 @@ function Event({basepath}) {
 
   return (
     <>
-    <Menu basepath={basepath} />
+    <Menu />
     <div style={{marginTop:'80px'}} className="container p-3" >
       <Divider orientation="left" >全部活動</Divider>
       <Form className="mt-3">
@@ -95,7 +96,7 @@ function Event({basepath}) {
                 </div>
               </div>
               <Space.Compact block className="mt-3" align="baseline">
-                <Button block onClick={()=>window.location.href=`${basepath}/event/${item.id}`} >立即報名</Button>
+                <Button block onClick={()=>window.location.href=`/event/${item.id}`} >立即報名</Button>
                 <Button icon={item.like?(<HeartFilled />):<HeartOutlined />} />
               </Space.Compact>
             </Card>

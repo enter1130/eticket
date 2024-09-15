@@ -7,15 +7,14 @@ import Login from './Page/Login';
 import NotFound from './Page/NotFound';
 
 function Index() {
-  const basePath = import.meta.env.BASE_URL;
   return (
-    <BrowserRouter basename={basePath}>
+    <BrowserRouter basename={'/'}>
       <Routes>
-        <Route index element={<Home basepath={basePath} />} />
-        <Route path='history' index element={<History basepath={basePath} />} />
-        <Route path='login' index element={<Login basepath={basePath} />} />
-        <Route path='event' index element={<Event basepath={basePath} />} />
-        <Route path='event/:id' element={<EventContent basepath={basePath} />} />
+        <Route index element={<Home />} />
+        <Route path='history' index element={<History />} />
+        <Route path='login' index element={<Login />} />
+        <Route path='event' index element={<Event />} />
+        <Route path='event/:id' element={<EventContent />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

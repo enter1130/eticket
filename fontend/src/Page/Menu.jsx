@@ -3,7 +3,7 @@ import { Avatar, Button, Col, Divider, Drawer, Row } from "antd";
 import { useState } from "react";
 import logo from '../../public/vite.svg';
 
-function Menu({basepath}){
+function Menu(){
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
@@ -42,17 +42,17 @@ function Menu({basepath}){
       </div>
       <Row gutter={12}>
         <Col span={12}>
-          <Button icon={<UserOutlined />} block type={'primary'} className='my-1' onClick={()=>window.location.href=`${basepath}/user`}>個人資料</Button>
+          <Button icon={<UserOutlined />} block type={'primary'} className='my-1' onClick={()=>window.location.href='/user'}>個人資料</Button>
         </Col>
         <Col span={12}>
-          <Button danger icon={<LogoutOutlined />} block type={'primary'} color="danger" className='my-1' onClick={()=>window.location.href=`${basepath}/logout`}>登出</Button>      
+          <Button danger icon={<LogoutOutlined />} block type={'primary'} color="danger" className='my-1' onClick={()=>window.location.href='/logout'}>登出</Button>      
         </Col>
       </Row>
       <Divider orientation="left" className='mt-3' >菜單</Divider>
       <Button block size="large" type='dashed' icon={<HomeOutlined />} className='my-1' onClick={()=>window.location.href='/'}>首頁</Button>
-      <Button block size="large" type='dashed' icon={<CalendarOutlined />} className='my-1' onClick={()=>window.location.href=`${basepath}/event`}>全部活動</Button>
-      <Button block size="large" type='dashed' icon={<HeartOutlined />} className='my-1' onClick={()=>window.location.href=`${basepath}/favorite`}>我的最愛</Button>
-      <Button block size="large" type='dashed' icon={<HistoryOutlined />} className='my-1' onClick={()=>window.location.href=`${basepath}/history`}>參與歷史與心得</Button>
+      <Button block size="large" type='dashed' icon={<CalendarOutlined />} className='my-1' onClick={()=>window.location.href='/event'}>全部活動</Button>
+      <Button block size="large" type='dashed' icon={<HeartOutlined />} className='my-1' onClick={()=>window.location.href='/favorite'}>我的最愛</Button>
+      <Button block size="large" type='dashed' icon={<HistoryOutlined />} className='my-1' onClick={()=>window.location.href='/history'}>參與歷史與心得</Button>
     </Drawer>
     </>
   )
