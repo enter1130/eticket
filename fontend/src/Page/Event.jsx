@@ -2,7 +2,6 @@ import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Button, Card, Divider, Form, Image, Skeleton, Space, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
-import logo from '../../public/vite.svg';
 import Menu from "./Menu";
 
 
@@ -13,61 +12,32 @@ function Event() {
     }
   };
 
-  const [newlist, setNewlist] = useState([
+  const [event, setEvent] = useState([]);
+  function getEvent(){
+    fetch('http://localhost:3000/api/event',
     {
-      id:"1",
-      date:'2021-10-10',
-      title:'活動1',
-      location:'台北市',
-      price:1000,
-      like:false,
-      tag:[
-        {name:'new',color:'default'},
-        {name:'free',color:'success'},
-        {name:'discount',color:'processing'}
-      ]
-    },{
-      id:"2",
-      date:'2021-10-11',
-      title:'活動2',
-      location:'台北市',
-      price:2000,
-      like:true,
-      tag:[
-        {name:'new',color:'default'},
-        {name:'hot',color:'error'},
-        {name:'free',color:'success'},
-      ]
-    },{
-      id:"3",
-      date:'2021-10-12',
-      title:'活動3',
-      location:'台北市',
-      price:3000,
-      like:true,
-      tag:[
-        {name:'new',color:'default'},
-        {name:'hot',color:'error'},
-        {name:'discount',color:'processing'}
-      ]
-    },
-  ]);
-
-  const handleUpdate = (target) => {
-    // 使用 map 來更新指定的項目（這裡以 id 為 3 的項目為例）
-    const updatedList = newlist.map(item => item.id==target ?item.like=!item.like:item.like=item.like);
-    setNewlist(updatedList);
-    console.log(newlist);
-    
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Access-Control-Allow-Origin':'*',
+      }
+    }
+    )
+    .then(res=>res.json())
+    .then(data=>{
+      setEvent(data.event)
+    })
   }
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+    getEvent();
     setTimeout(() => {
       setLoading(false);
     }, 2000);
   }, []);
 
+  if(!event) return(<></>)
   return (
     <>
     <Menu />
@@ -79,16 +49,18 @@ function Event() {
         </Form.Item>
       </Form>
       <Skeleton loading={loading} active paragraph={{rows:15}} className="">
-      {newlist.map((item,index)=>(
-          <div className="text-center px-2">
-            <Card title={item.title} key={index}>
-              <div className="border rounded p-3">
-                <Image preview={false} src={logo} width={160} />
+      {event.map((item,index)=>(
+          <div className="text-center px-2" key={index}>
+            <Card title={item.title}>
+              <div className="border rounded p-3 align-items-center d-flex" style={{height:'250px',overflow:'hidden'}}>
+                <Image preview={false} src={item.image} width={'100%'}/>
               </div>
               <div className="mt-3 text-start">
+                <h3>{item.name}</h3>
+                <div>主辦單位：{item.organizer}</div>
                 <div>日期：{item.date}</div>
                 <div>地點：{item.location}</div>
-                <div>價格：{item.price}</div>
+                <div>價格：{item.price?<>{item.price} TWD</>:'Free'}</div>
                 <div className="mt-3">
                   {item.tag.map((tag,index)=>(
                     <Tag key={index} color={tag.color}>{tag.name}</Tag>
@@ -97,7 +69,7 @@ function Event() {
               </div>
               <Space.Compact block className="mt-3" align="baseline">
                 <Button block onClick={()=>window.location.href=`/event/${item.id}`} >立即報名</Button>
-                <Button icon={item.like?(<HeartFilled />):<HeartOutlined />} />
+                <Button icon={item.like?(<HeartFilled />):<HeartOutlined />}>{item.like}</Button>
               </Space.Compact>
             </Card>
           </div>

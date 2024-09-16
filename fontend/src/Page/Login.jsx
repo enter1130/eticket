@@ -1,11 +1,11 @@
 import { LoginOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, notification } from 'antd';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Cookies from 'universal-cookie';
 
 function Login() {
-  
-  
+
   const [login, setLogin] = useState(false);
   const [text, setText] = useState('Sign in with Password');
   const [component, setComponent] = useState(<LoginLink />);
@@ -33,18 +33,51 @@ function Login() {
   )
 }
 
-function LoginPassword({result}){
+function LoginPassword(){
+  const cookies = new Cookies();
   const{handleSubmit}=useForm();
   
-  function onSubmit(){
-    let data=new FormData();
-    data.append('username',document.getElementById('username').value)
-    data.append('password',document.getElementById('password').value)
-    console.log(document.getElementById('username').value);
+  function onSubmit() {
+    let data = new FormData();
+    data.append('username', document.getElementById('username').value);
+    data.append('password', document.getElementById('password').value);
+    
+    getLogin(data);
+  }
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (data) => {    
+    api[data.type]({
+      message: data.message,
+      placement:'top',
+      duration: 5,
+    });
+  };
+  
+  // 發送 POST 請求
+  function getLogin(formData) {
+    fetch('http://localhost:3000/api/auth/login', {
+      method: 'POST',
+      body: formData // 直接傳送 FormData
+    })
+    .then(res => res.json())
+    .then(data => {
+      openNotification(data);
+      if(data.result){
+        cookies.set('token', `Bearer ${data.token}`);
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   }
 
   return (
     <Form onFinish={handleSubmit(onSubmit)} >
+      {contextHolder}
       <div className='mt-3'>
         <Form.Item label="Username" name={'username'} rules={[{required: true,message: 'Please input your username!',},]}>
           <Input id='username' />
@@ -62,7 +95,7 @@ function LoginPassword({result}){
   )
 }
 
-function LoginLink({result}){
+function LoginLink(){
   const{handleSubmit}=useForm();
   
   function onSubmit(){

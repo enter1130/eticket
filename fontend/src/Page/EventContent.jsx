@@ -1,25 +1,28 @@
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+// import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Avatar, Button, Descriptions, Divider, Drawer, Image, List, Rate, Skeleton, Space, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import Menu from "./Menu";
 
-
-function EventContent({id}) {
-
-  const item={
-    id:"1",
-    date:'2021-10-10',
-    title:'活動1',
-    location:'台北市',
-    price:1000,
-    like:false,
-    description:'活動內容，大致描述活動舉辦的原因，目的，內容，時間，地點，費用等等',
-    tag:[
-      {name:'new',color:'default'},
-      {name:'free',color:'success'},
-      {name:'discount',color:'processing'}
-    ],
-    status:'expired',
+function EventContent() {
+  const [event, setEvent] = useState(null);
+  const { id } = useParams();
+  
+  function getEvent(){
+    fetch(`http://localhost:3000/api/event/${id}`,
+    {
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Access-Control-Allow-Origin':'*'
+      }
+    }
+    )
+    .then(res=>res.json())
+    .then(data=>{      
+      setEvent(data)
+    })
   }
 
   const list=[
@@ -49,6 +52,7 @@ function EventContent({id}) {
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+    getEvent();
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -56,26 +60,28 @@ function EventContent({id}) {
 
   const [expanded, setExpanded] = useState(false);
 
+  if(!event) return(<></>)
   return (
     <>
     <Menu />
-    <div style={{height:'250px',overflow:'hidden'}}>
-      <Image preview={false} src="https://via.placeholder.com/300x200" width={'100%'}/>
+    <div style={{height:'300px',overflow:'hidden'}}>
+      <Image preview={false} src={event.image} width={'100%'}/>
     </div>
     <div className="container p-3">
       <Skeleton loading={loading} active paragraph={{rows:15}} className="">
-        <Typography.Title>{item.title}</Typography.Title>
+        <Typography.Title>{event.name}</Typography.Title>
         <div className="text-center">
           <div className="mt-3 text-start px-2">
               <div className="my-3">
-                {item.tag.map((tag,index)=>(
+                {event.tag.map((tag,index)=>(
                   <Tag key={index} color={tag.color}>{tag.name}</Tag>
                 ))}
               </div>
               <Descriptions title="活動資訊" column={1}>
-                <Descriptions.Item label="日期">{item.date}</Descriptions.Item>
-                <Descriptions.Item label="地點">{item.location}</Descriptions.Item>
-                <Descriptions.Item label="價格">{item.price} TWD</Descriptions.Item>
+                <Descriptions.Item label="日期">{event.date}</Descriptions.Item>
+                <Descriptions.Item label="地點">{event.location}</Descriptions.Item>
+                <Descriptions.Item label="參與人數">{event.attendee} / {event.quota}</Descriptions.Item>
+                <Descriptions.Item label="價格">{event.price?<>{event.price} TWD</>:'Free'}</Descriptions.Item>
                 <Descriptions.Item label="活動內容"></Descriptions.Item>
                 <Descriptions.Item>
                 <Typography.Paragraph
@@ -88,7 +94,7 @@ function EventContent({id}) {
                     onExpand: (_, info) => setExpanded(info.expanded),
                   }}
                 >
-                  {item.description.repeat(
+                  {event.description.repeat(
                     20,
                   )}
                 </Typography.Paragraph>
@@ -129,8 +135,9 @@ function EventContent({id}) {
         <div style={{marginBottom:'80px'}}></div>
       </Skeleton>
       <Space.Compact size="large" block className="text-center fixed-bottom p-3" align="baseline">
-        <Button size="large" block>{item.status=='expired'?'已截止':'立即報名'}</Button>
-        <Button size="large" icon={item.like?(<HeartFilled />):<HeartOutlined />} />
+        <Button size="large" onClick={()=>window.location.href='/event'} icon={<ArrowLeftOutlined />} />
+        <Button size="large" block>{event.status=='expired'?'已截止':'立即報名'}</Button>
+        {/* <Button size="large" icon={event.like?(<HeartFilled />):<HeartOutlined />} /> */}
       </Space.Compact>
     </div>
     </>
