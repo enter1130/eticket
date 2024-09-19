@@ -20,8 +20,12 @@ function EventContent() {
     }
     )
     .then(res=>res.json())
-    .then(data=>{      
-      setEvent(data)
+    .then(data=>{
+      if(data.result){
+        setEvent(data.event)
+      }else{
+        window.location.href='/404';
+      }
     })
   }
 
@@ -65,7 +69,7 @@ function EventContent() {
     <>
     <Menu />
     <div style={{height:'300px',overflow:'hidden'}}>
-      <Image preview={false} src={event.image} width={'100%'}/>
+      <Image src={event.image} width={'100%'}/>
     </div>
     <div className="container p-3">
       <Skeleton loading={loading} active paragraph={{rows:15}} className="">

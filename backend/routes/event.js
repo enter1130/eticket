@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
     const [id] = await db('event').insert({ name,category,date,location,description,organizer,image,quota,attendee,like,price,status,tag });
     res.status(201).json({ id, name,category,date,location,description,organizer,image,quota,attendee,like,price,status,tag });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating event', error });
+    res.status(500).json({ message: 'Error creating event',result:false, error });
   }
 });
 
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     
     res.json({message:'Success',result:true,event:event.length > 0 ? event : []});
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching event', error });
+    res.status(500).json({ message: 'Error fetching event',result:false, error });
   }
 });
 
@@ -33,11 +33,11 @@ router.get('/:id', async (req, res) => {
   try {
     const event = await db('event').where({ id }).first();
     if (!event) {
-      return res.status(404).json({ message: 'not found' });
+      return res.status(404).json({ message: 'not found',result:false });
     }
-    res.json(event || {});
+    res.json({message:'Success',result:true,event:event || {}});
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching event', error });
+    res.status(500).json({ message: 'Error fetching event',result:false, error });
   }
 });
 
@@ -49,11 +49,11 @@ router.put('/:id', async (req, res) => {
   try {
     const updated = await db('event').where({ id }).update({ name,category,date,location,description,organizer,image,quota,attendee,like,price,status,tag });
     if (!updated) {
-      return res.status(404).json({ message: 'not found' });
+      return res.status(404).json({ message: 'not found',result:false });
     }
     res.json({ message: 'updated successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating event', error });
+    res.status(500).json({ message: 'Error updating event',result:false, error });
   }
 });
 
@@ -64,11 +64,11 @@ router.delete('/:id', async (req, res) => {
   try {
     const deleted = await db('event').where({ id }).del();
     if (!deleted) {
-      return res.status(404).json({ message: 'not found' });
+      return res.status(404).json({ message: 'not found',result:false });
     }
     res.json({ message: 'deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting event', error });
+    res.status(500).json({ message: 'Error deleting event',result:false, error });
   }
 });
 
