@@ -27,8 +27,11 @@ const eventRouter = require('./routes/event'); // 引入 event 路由
 const homeRouter = require('./routes/home'); // 引入 home 路由
 const authRouter = require('./routes/auth'); // 引入 auth 路由
 const ticketRouter = require('./routes/ticket'); // 引入 ticket 路由
+const emailRouter = require('./routes/email'); // 引入 email 路由
+
 
 app.use('/api/event', eventRouter);
+app.use('/api/get.email', emailRouter);
 app.use(
   jwtMiddleware({ secret, algorithms: ['HS256'] }).unless({
     path: ['/api/auth/login', '/api/auth/register','/api'],

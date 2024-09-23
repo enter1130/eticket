@@ -96,12 +96,38 @@ function LoginPassword(){
 }
 
 function LoginLink(){
+  const cookies = new Cookies();
   const{handleSubmit}=useForm();
   
-  function onSubmit(){
-    let data=new FormData();
-    data.append('email',document.getElementById('email').value)
-    console.log(document.getElementById('email').value);
+  function onSubmit() {
+    let data = new FormData();
+    data.append('email', document.getElementById('email').value);
+    
+    getLogin(data);
+  }
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (data) => {    
+    api[data.type]({
+      message: data.message,
+      placement:'top',
+      duration: 5,
+    });
+  };
+  
+  // 發送 POST 請求
+  function getLogin(formData) {
+    fetch('http://localhost:3000/api/get.email', {
+      method: 'POST',
+      body: formData // 直接傳送 FormData
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   }
 
   return (
