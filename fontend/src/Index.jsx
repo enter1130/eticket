@@ -20,6 +20,7 @@ function Index() {
         <Route path='event/:id' element={<EventContent />} />
         <Route path='user' element={<User />} />
         <Route path='favorite' element={<Favorite />} />
+        {/* <Route path='ticket/:id' element={<Ticket />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

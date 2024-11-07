@@ -5,8 +5,9 @@ const bcrypt = require('bcrypt');
 const db = require('../db');  // 假設你有一個 Knex 設定文件
 const router = express.Router();
 const upload = multer();
+require('dotenv').config()
 
-const secret = `D;B-VEf^LdK:y3']rNm{t&A;Ub7D#fEP?Y+y9j%q(M]ByknM{r&zK8JN5cQ}4CGd.vW<CU3Vb]^"x/N9s'+k7dguVY:6u?f],t7EadJsy[%CTM`;
+const secret = process.env.SECRET;
 
 router.post('/login', upload.none(), async (req, res) => {
   const { username, password } = req.body;

@@ -1,5 +1,7 @@
 import { DatePicker, Form } from "antd";
 import { useState } from "react";
+import logo from '../../public/vite.svg';
+import Menu from "./Menu";
 
 function Ticket() {
   const { RangePicker } = DatePicker;
@@ -20,10 +22,12 @@ function Ticket() {
   };
 
   return (
-    <div className="container">
+    <>
+    <Menu />
+    <div style={{marginTop:'80px'}} className="container p-3">
         <div className='p-3 d-flex flex-row align-item-center border rounded mt-3'>
           <div className='d-flex justify-content-center align-item-center'>
-            <img className="border" src='public/vite.svg' style={{height:'60px',borderRadius:'50%'}} />
+            <img className="border" src={logo} style={{height:'60px',borderRadius:'50%'}} />
           </div>
           <div className="mx-3">
             <h1>王小明</h1>
@@ -46,6 +50,7 @@ function Ticket() {
           </Form.Item>
         </Form>
     </div>
+    </>
   )
 }
 

@@ -3,10 +3,9 @@ const cors = require('cors');
 const { expressjwt: jwtMiddleware } = require('express-jwt');
 const app = express();
 const port = 3000;
+require('dotenv').config()
 
-const secret = `D;B-VEf^LdK:y3']rNm{t&A;Ub7D#fEP?Y+y9j%q(M]ByknM{r&zK8JN5cQ}4CGd.vW<CU3Vb]^"x/N9s'+k7dguVY:6u?f],t7EadJsy[%CTM`;
-
-
+const secret = process.env.SECRET;
 // 允許 Express 處理 JSON 請求
 app.use(cors());
 app.use(express.json());

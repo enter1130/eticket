@@ -1,5 +1,5 @@
 import { ArrowLeftOutlined, HeartFilled, HeartOutlined, LoginOutlined } from "@ant-design/icons";
-import { Avatar, Button, Descriptions, Divider, Drawer, Image, List, Rate, Skeleton, Space, Tag, Typography } from "antd";
+import { Avatar, Button, Descriptions, Divider, Drawer, Image, List, Modal, Rate, Skeleton, Space, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import Cookies from "universal-cookie";
@@ -188,9 +188,55 @@ function EventContent() {
       </Skeleton>
       <Space.Compact size="large" block className="text-center fixed-bottom p-3" align="baseline">
         <Button size="large" onClick={()=>window.location.href='/event'} icon={<ArrowLeftOutlined />} />
-        {user?(<Button size="large" block>{event.status=='expired'?'已截止':'立即報名'}</Button>):<Button onClick={()=>window.location.href='/login'} icon={<LoginOutlined />} size="large" block>請先登入</Button>}
+        {user?(<Signup event={event} />):<Button onClick={()=>window.location.href='/login'} icon={<LoginOutlined />} size="large" block>請先登入</Button>}
       </Space.Compact>
     </div>
+    </>
+  )
+}
+
+function Signup({event}){
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState('是否報名參加「'+event.name+'」?');
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = () => {
+    setModalText('報名中......');
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setConfirmLoading(false);
+      setModalText('報名成功！')
+    }, 2000);
+
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+      setModalText('是否報名參加「'+event.name+'」?')
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  return(
+    <>
+    <Button size="large" onClick={showModal} block disabled={event.status=='expired'?true:false}>{event.status=='expired'?'已截止':'立即報名'}</Button>
+    <Modal
+      title="確認報名"
+      open={open}
+      onOk={handleOk}
+      confirmLoading={confirmLoading}
+      onCancel={handleCancel}
+      cancelText='取消'
+      okText='確認報名'
+      centered
+    >
+      <p>{modalText}</p>
+    </Modal>
     </>
   )
 }
