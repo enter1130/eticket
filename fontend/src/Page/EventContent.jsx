@@ -1,24 +1,67 @@
-// import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, HeartFilled, HeartOutlined, LoginOutlined } from "@ant-design/icons";
 import { Avatar, Button, Descriptions, Divider, Drawer, Image, List, Rate, Skeleton, Space, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
+import Cookies from "universal-cookie";
 import Menu from "./Menu";
 
 function EventContent() {
-  const [event, setEvent] = useState(null);
-  const { id } = useParams();
-  
-  function getEvent(){
-    fetch(`http://localhost:3000/api/event/${id}`,
-    {
+  const cookies = new Cookies();
+
+  const [user,setUser]=useState(null)
+  function getUser(){
+    fetch('http://localhost:3000/api/auth/user',{
       method:'GET',
       headers:{
         'Content-Type':'application/json',
-        'Access-Control-Allow-Origin':'*'
+        'Access-Control-Allow-Origin':'*',
+        'Authorization':`${cookies.get('token')}`
+      }})
+    .then(res=>res.json())
+    .then(data=>{
+      setUser(data.user)
+    })
+  }
+
+  const [like,setLike]=useState(0)
+  function getLike(){
+    fetch(`http://localhost:3000/api/like/${id}`,{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Access-Control-Allow-Origin':'*',
+        'Authorization':`${cookies.get('token')}`
+      }})
+    .then(res=>res.json())
+    .then(data=>{
+      setLike(data.like)
+    })
+  }
+
+  const [event, setEvent] = useState(null);
+  const { id } = useParams();
+  function updateLike(){
+    fetch(`http://localhost:3000/api/like/like.update/${id}`,{
+      method:'POST',
+      headers:{
+        'Access-Control-Allow-Origin':'*',
+        'Authorization':`${cookies.get('token')}`
+      }})
+    .then(res=>res.json())
+    .then(data=>{
+      setLike(data.like)
+    })
+  }
+
+  function getEvent(){
+    fetch(`http://localhost:3000/api/event/${id}`,{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Access-Control-Allow-Origin':'*',
+        'Authorization':`${cookies.get('token')}`
       }
-    }
-    )
+    })
     .then(res=>res.json())
     .then(data=>{
       if(data.result){
@@ -57,6 +100,8 @@ function EventContent() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getEvent();
+    getLike();
+    getUser()
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -72,8 +117,11 @@ function EventContent() {
       <Image src={event.image} width={'100%'}/>
     </div>
     <div className="container p-3">
-      <Skeleton loading={loading} active paragraph={{rows:15}} className="">
-        <Typography.Title>{event.name}</Typography.Title>
+      <Skeleton loading={loading} active paragraph={{rows:15}}>
+        <Typography.Title className="d-flex align-items-center justify-content-between">
+        {event.name}
+        {like?(<HeartFilled style={{ fontSize: '25px', color: 'red' }} onClick={()=>updateLike()} />):<HeartOutlined style={{ fontSize: '25px', color: '#000' }} onClick={()=>updateLike()} />}
+        </Typography.Title>
         <div className="text-center">
           <div className="mt-3 text-start px-2">
               <div className="my-3">
@@ -140,8 +188,7 @@ function EventContent() {
       </Skeleton>
       <Space.Compact size="large" block className="text-center fixed-bottom p-3" align="baseline">
         <Button size="large" onClick={()=>window.location.href='/event'} icon={<ArrowLeftOutlined />} />
-        <Button size="large" block>{event.status=='expired'?'已截止':'立即報名'}</Button>
-        {/* <Button size="large" icon={event.like?(<HeartFilled />):<HeartOutlined />} /> */}
+        {user?(<Button size="large" block>{event.status=='expired'?'已截止':'立即報名'}</Button>):<Button onClick={()=>window.location.href='/login'} icon={<LoginOutlined />} size="large" block>請先登入</Button>}
       </Space.Compact>
     </div>
     </>

@@ -2,10 +2,12 @@ import { TeamOutlined } from "@ant-design/icons";
 import { Button, Card, Divider, Form, Image, Skeleton, Space, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
+import Cookies from "universal-cookie";
 import Menu from "./Menu";
 
 
-function Event() {
+function Favorite() {
+  const cookies = new Cookies();
   const onSearch = (value) =>{
     if(value!==''){
       console.log(value)
@@ -14,20 +16,24 @@ function Event() {
   
   const [event, setEvent] = useState([]);
   function getEvent(){
-    fetch('http://localhost:3000/api/event',
+    fetch('http://localhost:3000/api/like/event',
     {
       method:'GET',
       headers:{
         'Content-Type':'application/json',
         'Access-Control-Allow-Origin':'*',
+        'Authorization':`${cookies.get('token')}`
       }
-    }
-    )
+    })
     .then(res=>res.json())
     .then(data=>{
-      setEvent(data.event)
+      if(data.result){
+        setEvent(data.event)
+      }
     })
   }
+
+  console.log(event)
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -42,7 +48,7 @@ function Event() {
     <>
     <Menu />
     <div style={{marginTop:'80px'}} className="container p-3" >
-      <Divider orientation="left" >全部活動</Divider>
+      <Divider orientation="left" >我的最愛</Divider>
       <Form className="mt-3">
         <Form.Item name={'search'}>
           <Search onSearch={onSearch} allowClear placeholder="輸入活動名稱" />
@@ -75,7 +81,7 @@ function Event() {
           </div>
         ))}
       <div className="text-center mt-3">
-        <Button block size="large" type="dashed">查看更多</Button>
+        {event?(<Button block size="large" type="dashed">查看更多</Button>):<Button block size="large" type="dashed" onClick={()=>window.location.href="/login"}>請先登入</Button>}
       </div>
       </Skeleton>
     </div>
@@ -83,4 +89,4 @@ function Event() {
   )
 }
 
-export default Event
+export default Favorite

@@ -1,4 +1,4 @@
-import { HeartFilled, HeartOutlined, LoginOutlined, PicRightOutlined } from "@ant-design/icons";
+import { LoginOutlined, PicRightOutlined, TeamOutlined } from "@ant-design/icons";
 import { Button, Card, Carousel, Divider, Form, Image, Modal, QRCode, Skeleton, Space, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
@@ -45,14 +45,8 @@ function Home() {
       console.log(value)
     }
   };
-  const [ticket,setTicket]=useState([])
 
-  const handleUpdate = (target) => {
-    // 使用 map 來更新指定的項目（這裡以 id 為 3 的項目為例）
-    const updatedList = newlist.map(item => item.id==target ?item.like=!item.like:item.like=item.like);
-    setNewlist(updatedList);
-    console.log(newlist);
-  }
+  const [ticket,setTicket]=useState([])
 
   const [visible, setVisible] = useState(false);
 
@@ -95,10 +89,10 @@ function Home() {
             <div>按此瀏覽全部活動</div>
           </Button>
         </div>}
-      </Carousel>:<div className="text-center p-2 d-flex justify-content-center">
-          <Button onClick={()=>window.location.href='/login'} type={'primary'} block style={{height:'100px'}} >
-            <LoginOutlined style={{ fontSize: '40px'}} label="" />
-            <div className="mx-2" style={{fontSize:'20pt'}}>按此登錄</div>
+      </Carousel>:<div className="text-center p-2 d-flex justify-content-center align-items-center">
+          <Button className="mx-2" onClick={()=>window.location.href='/login'} type={'primary'} block style={{height:'70px'}} >
+            <LoginOutlined style={{ fontSize: '30px'}} label="按此登錄" />
+            <div className="mx-2" style={{fontSize:'15pt'}}>按此登錄</div>
           </Button>
         </div>}
       </Skeleton>
@@ -125,7 +119,7 @@ function Home() {
               </div>
               <Space.Compact block className="mt-3" align="baseline">
                 <Button block onClick={()=>window.location.href=`/event/${item.id}`} >立即報名</Button>
-                <Button icon={item.like?(<HeartFilled />):<HeartOutlined />}>{item.like}</Button>
+                <Button icon={<TeamOutlined />}>{item.attendee}</Button>
               </Space.Compact>
             </Card>
           </div>

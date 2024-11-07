@@ -44,7 +44,6 @@ router.post('/login', upload.none(), async (req, res) => {
 
 router.get('/user', async (req, res) => {
   const user = req.auth.user; // 從 Token 中解碼出的 userId
-  
   try {
     // 返回查詢到的用戶信息
     res.json({

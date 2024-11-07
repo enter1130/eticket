@@ -46,7 +46,6 @@ function Menu(){
     getUser();
   }, []);
 
-  if(!user) return(<></>)
   return(
     <>
     <nav id="menu" className="fixed-top py-3">
@@ -55,11 +54,11 @@ function Menu(){
         <img src={logo} alt="logo" style={{height:'40px'}} />
       </a>
       <div className='d-flex justify-content-center align-item-center'>
-        <Button onClick={showDrawer} type={'text'} size="large" icon={<MenuOutlined />} />
+        {user?(<Button onClick={showDrawer} type={'text'} size="large" icon={<MenuOutlined />} />):null}
       </div>
     </div>
     </nav>
-    <Drawer onClose={onClose} open={open}>
+    {user?(<Drawer onClose={onClose} open={open}>
       <div className='pb-3 d-flex flex-row justify-content-between align-item-center mx-1'>
         <div className='d-flex justify-content-center align-item-center'>
           <Avatar className="border" src={logo} size={60} >{user.name}</Avatar>
@@ -82,7 +81,7 @@ function Menu(){
       <Button block size="large" type='dashed' icon={<CalendarOutlined />} className='my-1' onClick={()=>window.location.href='/event'}>全部活動</Button>
       <Button block size="large" type='dashed' icon={<HeartOutlined />} className='my-1' onClick={()=>window.location.href='/favorite'}>我的最愛</Button>
       <Button block size="large" type='dashed' icon={<HistoryOutlined />} className='my-1' onClick={()=>window.location.href='/history'}>參與歷史與心得</Button>
-    </Drawer>
+    </Drawer>):null}
     </>
   )
 }
