@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');  // 假設你有一個 Knex 設定文件
 const multer = require('multer');
-const knex = require('knex');
 const upload = multer();
 
 router.get('/event', upload.none(), async (req, res) => {
@@ -44,14 +43,14 @@ router.get('/:id', upload.none(), async (req, res) => {
     if (!like) {
       return res.json({message:'Success',result:true,like:0});
     }
-    res.json({message:'Success',result:true,like:like.is_like});
+    res.json({message:'Success',result:true,like:1});
   } catch (error) {
     res.status(500).json({ message: 'Error fetching like',result:false, error });
   }
 });
 
 
-router.post('/like.update/:id', upload.none(), async (req, res) => {
+router.post('/update/:id', upload.none(), async (req, res) => {
   const { id } = req.params;
   const { user }=req.auth
   

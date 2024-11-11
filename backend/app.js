@@ -24,7 +24,7 @@ app.use('/api/event', eventRouter);
 app.use('/api/get.email', emailRouter);
 app.use(
   jwtMiddleware({ secret, algorithms: ['HS256'] }).unless({
-    path: ['/api/auth/login', '/api/auth/register','/api'],
+    path: ['/api/auth/login','/api/auth/login.email', '/api/auth/register','/api'],
   })
 );
 app.use('/api/like', likeRouter);

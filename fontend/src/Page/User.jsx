@@ -63,7 +63,7 @@ function User() {
             <Avatar className="border" src={logo} size={60} >{user.name}</Avatar>
           </div>
           <div className="text-end">
-            <Text >UserID: <Text copyable>1234152</Text></Text>
+            <Text >UserID: <Text copyable>{user.user_id}</Text></Text>
             <div style={{fontSize:'20pt'}}>{user.name}</div>
           </div>
         </div>

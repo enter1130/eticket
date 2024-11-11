@@ -2,7 +2,8 @@ import { CalendarOutlined, HeartOutlined, HistoryOutlined, HomeOutlined, LogoutO
 import { Avatar, Button, Col, Divider, Drawer, Row, Typography } from "antd";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
-import logo from '../../public/vite.svg';
+import logo from '../../public/eTicket.png';
+import user_icon from '../../public/vite.svg';
 
 function Menu(){
   const [open, setOpen] = useState(false);
@@ -61,10 +62,10 @@ function Menu(){
     {user?(<Drawer onClose={onClose} open={open}>
       <div className='pb-3 d-flex flex-row justify-content-between align-item-center mx-1'>
         <div className='d-flex justify-content-center align-item-center'>
-          <Avatar className="border" src={logo} size={60} >{user.name}</Avatar>
+          <Avatar className="border" src={user_icon} size={60} >{user.name}</Avatar>
         </div>
         <div className="text-end">
-          <Text >UserID: <Text copyable>1234152</Text></Text>
+          <Text >UserID: <Text copyable>{user.user_id}</Text></Text>
           <div style={{fontSize:'20pt'}}>{user.name}</div>
         </div>
       </div>

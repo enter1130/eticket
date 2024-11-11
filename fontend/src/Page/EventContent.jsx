@@ -24,6 +24,7 @@ function EventContent() {
   }
 
   const [like,setLike]=useState(0)
+  const [ticket,setTicket]=useState(0)
   function getLike(){
     fetch(`http://localhost:3000/api/like/${id}`,{
       method:'GET',
@@ -36,12 +37,24 @@ function EventContent() {
     .then(data=>{
       setLike(data.like)
     })
+
+    fetch(`http://localhost:3000/api/ticket/${id}`,{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Access-Control-Allow-Origin':'*',
+        'Authorization':`${cookies.get('token')}`
+      }})
+    .then(res=>res.json())
+    .then(data=>{
+      setTicket(data.ticket)
+    })
   }
 
   const [event, setEvent] = useState(null);
   const { id } = useParams();
   function updateLike(){
-    fetch(`http://localhost:3000/api/like/like.update/${id}`,{
+    fetch(`http://localhost:3000/api/like/update/${id}`,{
       method:'POST',
       headers:{
         'Access-Control-Allow-Origin':'*',
@@ -120,7 +133,7 @@ function EventContent() {
       <Skeleton loading={loading} active paragraph={{rows:15}}>
         <Typography.Title className="d-flex align-items-center justify-content-between">
         {event.name}
-        {like?(<HeartFilled style={{ fontSize: '25px', color: 'red' }} onClick={()=>updateLike()} />):<HeartOutlined style={{ fontSize: '25px', color: '#000' }} onClick={()=>updateLike()} />}
+        {user?(like?(<HeartFilled style={{ fontSize: '25px', color: 'red' }} onClick={()=>updateLike()} />):<HeartOutlined style={{ fontSize: '25px', color: '#000' }} onClick={()=>updateLike()} />):null}
         </Typography.Title>
         <div className="text-center">
           <div className="mt-3 text-start px-2">
@@ -156,7 +169,7 @@ function EventContent() {
         </div>
         <Divider orientation="left" ></Divider>
         <Typography.Title level={3}>活動評價</Typography.Title>
-        <List
+        {event.status!='open'?(<List
           loading={loading}
           height={400}
           itemLayout="vertical"
@@ -183,19 +196,26 @@ function EventContent() {
               <Thoughts item={item} />
           </List.Item>
           )}
-        />
+        />)
+        :(
+        <Typography.Paragraph title="心得內容" ellipsis={{rows:'2'}}>
+          <div className="d-flex justify-content-center align-items-center" style={{minHeight:"100px"}}>
+            活動尚未結束，心得收集中......
+          </div>
+        </Typography.Paragraph>)}
         <div style={{marginBottom:'80px'}}></div>
       </Skeleton>
       <Space.Compact size="large" block className="text-center fixed-bottom p-3" align="baseline">
         <Button size="large" onClick={()=>window.location.href='/event'} icon={<ArrowLeftOutlined />} />
-        {user?(<Signup event={event} />):<Button onClick={()=>window.location.href='/login'} icon={<LoginOutlined />} size="large" block>請先登入</Button>}
+        {user?(<Signup event={event} ticket={ticket} />):<Button onClick={()=>window.location.href='/login'} icon={<LoginOutlined />} size="large" block>請先登入</Button>}
       </Space.Compact>
     </div>
     </>
   )
 }
 
-function Signup({event}){
+function Signup({event,ticket}){
+  const cookies = new Cookies();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('是否報名參加「'+event.name+'」?');
@@ -206,17 +226,40 @@ function Signup({event}){
   const handleOk = () => {
     setModalText('報名中......');
     setConfirmLoading(true);
-    setTimeout(() => {
-      setConfirmLoading(false);
-      setModalText('報名成功！')
-    }, 2000);
-
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-      setModalText('是否報名參加「'+event.name+'」?')
-    }, 2000);
+    let data = new FormData();
+    data.append('event_id', event.id);
+    getTicket(data)
   };
+
+  function getTicket(formData){
+    fetch(`http://localhost:3000/api/ticket/create`,{
+      method:'POST',
+      body: formData, // 直接傳送 FormData
+      headers:{
+        'Access-Control-Allow-Origin':'*',
+        'Authorization':`${cookies.get('token')}`
+      }
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.result){
+        setTimeout(() => {
+          setConfirmLoading(false);
+          setModalText('報名成功！')
+        }, 2000);
+      }else{
+        setTimeout(() => {
+          setConfirmLoading(false);
+          setModalText('重複報名！')
+        }, 2000);
+      }
+
+      setTimeout(() => {
+        setOpen(false);
+        setModalText('是否報名參加「'+event.name+'」?')
+      }, 5000);
+    })
+  }
 
   const handleCancel = () => {
     setOpen(false);
@@ -224,7 +267,7 @@ function Signup({event}){
 
   return(
     <>
-    <Button size="large" onClick={showModal} block disabled={event.status=='expired'?true:false}>{event.status=='expired'?'已截止':'立即報名'}</Button>
+    <Button size="large" onClick={showModal} block disabled={event.status=='expired' || ticket==1?true:false}>{event.status=='expired'?'已截止':ticket==1?('已報名'):'立即報名'}</Button>
     <Modal
       title="確認報名"
       open={open}

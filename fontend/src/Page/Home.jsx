@@ -3,7 +3,7 @@ import { Button, Card, Carousel, Divider, Form, Image, Modal, QRCode, Skeleton, 
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
-import logo from '../../public/vite.svg';
+import logo from '../../public/eTicket.png';
 import Menu from "./Menu";
 
 function Home() {
@@ -164,7 +164,7 @@ function Ticket({item,isOpen}){
       <div className="ticket">
         <img src="https://via.placeholder.com/300x200" alt="Event Image" />
         <div className="ticket-info">
-            <h1>{item.title}</h1>
+            <h1 className="my-3">{item.name}</h1>
             <div className="text-start">
             <p className="location">地點：{item.location}</p>
             <p className="date">日期：{item.date}</p>

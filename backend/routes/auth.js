@@ -30,7 +30,37 @@ router.post('/login', upload.none(), async (req, res) => {
       id: user.id,
       username: user.username,
       name: user.name,
-      email: user.email  // 只包含需要的字段，不包含 password
+      email: user.email,  // 只包含需要的字段，不包含 password
+      user_id:user.user_id
+    };
+
+    // 生成 JWT
+    const token = jwt.sign({ user:  tokenPayload },secret , { expiresIn: '1h' });
+
+    // 返回 token
+    res.json({ message:'Login Success',type:'success',result:true,token:token });
+  } catch (error) {
+    res.status(500).json({ message: 'Login failed',type:'error',result:false, error });
+  }
+});
+
+router.post('/login.email', upload.none(), async (req, res) => {
+  const { email } = req.body;
+  
+  try {
+    // 查找用戶
+    const user = await db('users').where({ email }).first();
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not found',type:'error',result:false });
+    }
+
+    const tokenPayload = {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      email: user.email,  // 只包含需要的字段，不包含 password
+      user_id:user.user_id
     };
 
     // 生成 JWT

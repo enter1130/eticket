@@ -5,6 +5,7 @@
 exports.up = function(knex) {
     return knex.schema.createTable('users', function(table) {
         table.increments('id').unsigned();        // 自動遞增的 ID
+        table.integer('user_id').unsigned().notNullable();       // 用戶 ID
         table.string('name');          // 姓名
         table.string('username');          // 用戶名
         table.string('password');      // 密碼
