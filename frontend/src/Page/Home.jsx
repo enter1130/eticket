@@ -1,9 +1,10 @@
 import { LoginOutlined, PicRightOutlined, TeamOutlined } from "@ant-design/icons";
-import { Button, Card, Carousel, Divider, Form, Image, Modal, QRCode, Skeleton, Space, Tag } from "antd";
+import { Button, Card, Carousel, Divider, Form, Image, Modal, Skeleton, Space, Tag } from "antd";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import logo from '../../public/eTicket.png';
+import Epass from "./Epass";
 import Menu from "./Menu";
 
 function Home() {
@@ -154,8 +155,8 @@ function Ticket({item,isOpen}){
   return(
     <>
     <Modal centered maskClosable={false} title={item.title} footer="" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-      <div style={{height:windowHeight*0.7}} className="d-flex justify-content-center align-items-center">
-        <QRCode size={250} status={item.status} icon={logo} iconSize={160/4} errorLevel="H" value={item.id} />
+      <div style={{height:windowHeight*0.8}} className="d-flex justify-content-center align-items-center">
+        <Epass item={item} logo={logo} />
       </div>
       <Divider />
       <div className="text-center">抵達現場後請出示此QR code</div>
@@ -171,7 +172,7 @@ function Ticket({item,isOpen}){
             <p className="price">價格：{item.price}</p>
             </div>
             <div className="ticket-footer">
-                <Button onClick={showModal} type="text">{item.status=='scanned'?"感謝您的參與！":"展示QR Code"}</Button>
+                <Button onClick={showModal} type="text">{"展示QR Code"}</Button>
             </div>
         </div>
       </div>
